@@ -1,0 +1,5 @@
+#upload-nodes-edit-form #edit-save-continue,
+#upload-nodes-upload-form #edit-save-continue,
+#upload-nodes-edit-form #edit-delete{
+  display: none !important; 
+}

@@ -1,0 +1,1594 @@
+/**
+ * @file
+ * Page Styling
+ *
+ * Style the markup found in page.tpl.php. Also includes some styling of
+ * miscellaneous Drupal elements that appear in the $content variable, such as
+ * ul.links, .pager, .more-link, etc.
+ */
+
+
+/*
+ * Body
+ */
+ 
+ 
+ * {
+margin: 0;
+}
+
+html, body {
+height: 100%;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+     color: #333333;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 13px;
+}
+
+#page-wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: 0 auto -60px;
+-webkit-box-shadow: 0px -1px 5px rgba(50, 50, 50, 0.38);
+-moz-box-shadow:    0px -1px 5px rgba(50, 50, 50, 0.38);
+box-shadow:         0px -1px 5px rgba(50, 50, 50, 0.38);
+}
+
+#page {
+width: 980px;
+margin: 0 auto;
+}
+
+/*
+ * The skip-link link will be completely hidden until a user tabs to the link.
+ * See the element-focusable rule in system.base.css.
+ */
+
+
+/*
+ * Header
+ */
+#header {
+
+}
+
+#header .section {
+}
+
+#logo /* Wrapping link for logo */ {
+  display: block;
+  margin-top: 10px;
+  padding: 0;
+  float: left;
+  margin-bottom: 14px;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+
+#logo img {
+  vertical-align: bottom;
+}
+
+#name-and-slogan /* Wrapper for website name and slogan */ {
+  float: left;
+}
+
+h1#site-name,
+div#site-name /* The name of the website */ {
+  margin: 0;
+  font-size: 2em;
+  line-height: 1.5em;
+}
+
+#site-name a:link,
+#site-name a:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+#site-name a:hover,
+#site-name a:focus {
+  text-decoration: underline; 
+}
+
+
+#site-slogan /* The slogan (or tagline) of a website */ {
+}
+
+.region-header /* Wrapper for any blocks placed in the header region */ {
+  clear: both; /* Clear the logo */
+}
+
+a{
+  color: #666666;
+  text-decoration: none;
+}
+
+a:hover{
+  color: #ED812B;;
+  text-decoration: underline;
+}
+
+/*
+ * Main (container for everything else)
+ */
+#main-wrapper {
+}
+
+#main {
+}
+
+/*
+ * Content
+ */
+#content {
+}
+
+#content .section {
+}
+
+.region-highlighted {
+}
+
+.breadcrumb /* The path to the current page in the form of a list of links */ {
+  padding-bottom: 0; /* Undo system.css */
+}
+
+h1.title, /* The title of the page */
+h2.node-title, /* Title of a piece of content when it is given in a list of content */
+h2.block-title, /* Block title */
+h2.title, /* Comment section heading */
+h2.comment-form, /* Comment form heading */
+h3.title /* Comment title */ {
+  margin: 0;
+}
+
+tr.even, tr.odd {
+    border-bottom: 1px solid #CCCCCC;
+    padding: 0.1em 0.6em;
+}
+
+tr.even {
+  background-color: #FFFFFF;
+}
+
+tr.odd {
+  background-color: #EEEEEE;
+}
+
+
+.view-custom-tracker td{
+  border: 1px solid #CCCCCC;
+    font-family: Arial,Helvetica,sans-serif;
+    padding: 5px;
+    text-align: center;
+}
+
+th{
+   border-bottom: medium none;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    line-height: 12px;
+    padding: 0;
+    text-align: left;
+}
+}
+
+.view-custom-tracker table.views-table td.views-field-type {
+    width: 50px;
+}
+
+div.messages /* Important messages (status, warning, and error) for the user. See also the declarations in messages.css. */ {
+  margin: 1.5em 0; /* Drupal core uses "6px 0" margin */
+}
+
+div.messages ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+div.status /* Normal priority messages */ {
+}
+
+div.warning,
+tr.warning /* Medium priority messages */ {
+  /* border: 1px solid #f0c020; */ /* Drupal core uses: 1px solid #f0c020 */
+}
+
+div.error,
+tr.error /* High priority messages. See also the .error declaration below. */ {
+}
+
+.error /* Errors that are separate from div.messages status messages. */ {
+  /* color: #e55; */ /* Drupal core uses a #e55 background */
+}
+
+.warning /* Warnings that are separate from div.messages status messages. */ {
+  /* color: #e09010; */ /* Drupal core uses a #e09010 background */
+}
+
+div.tabs /* See also the tabs.css file. */ {
+}
+
+.region-help /* Help text on a page */ {
+}
+
+.more-help-link /* Link to more help */ {
+}
+
+.region-content /* Wrapper for the actual page content */ {
+}
+
+ul.links /* List of links */ {
+}
+
+ul.links.inline {
+  display: block; /* Let the links be inline, but the container be a block. */
+}
+
+ul.links li {
+  padding: 0 1em 0 0; /* LTR */
+}
+
+.item-list .pager /* A list of page numbers when more than 1 page of content is available */ {
+  padding: 0;
+}
+
+.item-list .pager li /* Each page number in the pager list */ {
+  padding: 0 0.5em;
+}
+
+.feed-icon /* The link to the RSS or Atom feed for the current list of content */ {
+}
+
+.more-link /* Aggregator, blog, and forum more link */ {
+}
+
+/*
+ * First sidebar (on left in LTR languages, on right in RTL)
+ *
+ * Remember to NOT add padding or margin to your .region-sidebar-first
+ * (see the layout.css file.)
+ */
+.region-sidebar-first {
+}
+
+.region-sidebar-first .section {
+}
+
+/*
+ * Second sidebar (on right in LTR languages, on left in RTL)
+ *
+ * Remember to NOT add padding or margin to your .region-sidebar-second
+ * (see the layout.css file.)
+ */
+.region-sidebar-second {
+}
+
+.region-sidebar-second .section {
+}
+
+/*
+ * Footer
+ */
+.region-footer {
+}
+
+/*
+ * Page bottom
+ */
+.region-bottom /* Wrapper for any blocks placed in the page bottom region */ {
+}
+
+
+#footer, .push {
+height: 60px;
+clear: both;
+}
+
+#footer{
+    background-color: #FFFBF0;
+    border-top: 1px solid #FDB523;
+    box-shadow: 1px 7px 17px #FFFBF0;
+    width:960px;
+    margin:0 auto;
+}
+#block-menu-menu-titlemenu ul li{
+	text-decoration:none;
+	list-style:none;
+	float: left;
+	padding-right:10px;
+}
+
+#block-menu-menu-titlemenu li a{
+	color: #666666;
+	text-decoration:none;
+}
+#block-menu-menu-titlemenu li a:hover{
+	color:#d02dec;
+	text-decoration:underline;
+
+}
+#header #logo img{
+	height: 70px;
+	width: 435px;
+}
+
+
+#block-menu-menu-headmenu ul{
+	padding-left:0px;
+}
+#block-menu-menu-headmenu ul li{
+	text-decoration:none;
+	list-style:none;
+	float: left;
+	padding-right:10px;
+	padding-top: 26px;
+
+}
+#block-menu-menu-headmenu li{
+	padding-right:10px;
+}
+#block-menu-menu-headmenu li a:hover{
+	color:#d02dec;
+	text-decoration:underline;
+
+}
+#block-menu-menu-headmenu li a{
+	color: #333333;
+	text-decoration:none;
+}
+
+#search-block-form{
+	float:right;
+	clear: both;
+	position:absolute;
+	top: -60px;
+	left: 755px;
+}
+#block-menu-menu-headmenu li.active-trail a{
+  text-decoration: none;
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+#block-menu-menu-headmenu li a{
+	font-size: 15px;
+    padding: 2px 3px;
+}
+
+#main-wrapper #content h1{
+	  border-bottom: 2px solid #666666;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 25px;
+    margin: 0 0 15px;
+}
+
+
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, hr, table, fieldset {
+    font-size: 12px;
+    margin: 7px 0;
+}
+
+#block-privatemsg-privatemsg-menu{
+font-size: 15px;
+}
+#block-privatemsg-privatemsg-menu a{
+	color: #666666;
+    font-family: sans-serif;
+    text-decoration: none;
+}
+
+h1.title, h2.node-title, h2.block-title, h2.title, h2.comment-form, h3.title {
+    border-bottom: 2px solid #666666;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 25px;
+    margin: 0 0 15px;
+}
+
+.item-list ul{
+	
+}
+
+.node .field-name-field-foto{
+  clear: both;
+}
+
+
+.field-name-field-foto  img{
+  border: 1px solid #DDE8EA;
+}
+
+.node .user-picture{
+  clear: both;
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 10px;
+}
+
+.node .field-name-field-photo-pristroy{
+  clear: both;
+}
+
+.submitted{
+  text-align: right;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color:	#999999;
+}
+
+.node-tovar  .field-name-field-foto,
+.node .field-name-field-foto-hvastiki{
+  clear: both;
+}
+
+.field-name-field-foto img{
+  border: 1px solid #aeaeae;
+}
+
+.node-tovar  .content{
+  clear: right;
+}
+
+
+#block-views-hvastiki-block .view-content{
+	margin-top:20px;
+}
+#block-views-hvastiki-block .view-header{
+	display:none;
+}
+
+
+.view-f- .view-header a,
+.view-hvastiki .view-header a ,
+.phototovar_field_reftovar a,
+.view-pristroy-users .view-header a{
+    background: url("../images/add_photo.png") no-repeat scroll center 10px transparent;
+    border: 1px solid #DDE8EA;
+    display: block;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    padding-top: 50px;
+    text-transform: uppercase;
+    width: 140px;
+    text-align: center;
+}
+
+.view-pristroy-users .view-header  p,
+.view-f- .view-header  p{
+  text-align: center;
+}
+
+
+
+#block-views-block-pristroy-block h2,
+#block-views-block-organizatorov-block h2,
+#block-views-block-hvastiki-block h2{
+  border-bottom: 2px solid #666666;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 25px;
+  margin: 0 0 15px;
+}
+
+#block-views-block-pristroy-block h2 a,
+#block-views-block-organizatorov-block h2 a,
+#block-views-block-hvastiki-block h2 a{
+  color: #333333;
+}
+
+#block-views-block-pristroy-block h2 a:hover,
+#block-views-block-organizatorov-block h2 a:hover,
+#block-views-block-hvastiki-block h2 a:hover{
+  color: #d02dec;
+  text-decoration: none;
+}
+
+.view-pristroy-users  .views-field-created{
+  font-size: 11px;
+  color: #666;
+}
+
+.view-hvastiki .view-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+#block-views-avatar-block{
+  margin-bottom: 0px;
+}
+
+#block-views-block-hvastiki-block table,
+#block-views-block-organizatorov-block table,
+#block-views-block-pristroy-block table{
+  width: 100%;
+}
+
+#block-views-block-hvastiki-block td,
+#block-views-block-organizatorov-block td,
+#block-views-block-pristroy-block td{
+  width: 50%;
+}
+
+#block-views-block-hvastiki-block  img,
+#block-views-block-organizatorov-block  img,
+#block-views-block-pristroy-block  img{
+  border: 1px solid #aeaeae;
+}
+
+#block-views-block-hvastiki-block  img:hover,
+#block-views-block-organizatorov-block  img:hover,
+#block-views-block-pristroy-block  img:hover{
+  border: 1px solid #d02dec;
+}
+
+.view-uchastniki table{
+  width: 100%;
+}
+
+.view-uchastniki table td{
+  text-align: center;
+}
+
+.view-pristroy-users .view-content,
+.view-f- .view-content,
+.view-hvastiki .view-content{
+  border-top: 1px dotted #999999;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.view-pristroy-users table,
+.view-f- table,
+.view-hvastiki table{
+  width: 100%;
+}
+
+.view-pristroy-users  td,
+.view-f-  td,
+.view-hvastiki td{
+  width: 33%;
+  text-align: center;
+}
+
+.view-pristroy-users img,
+.view-f- img,
+.view-hvastiki img {
+  padding: 2px;
+  border: 1px solid #aeaeae;
+  text-align: center;
+}
+
+.view-pristroy-users img:hover,
+.view-f- img:hover,
+.view-hvastiki img:hover {
+  border: 1px solid #d02dec;
+}
+
+#comments{
+  clear: both;
+}
+
+
+
+.view-topics .views-field-title,
+.view-albums-with-tags .views-field-title{
+
+}  
+
+.view-topics .views-field-title a,
+.view-albums-with-tags .views-field-title a{
+ color: #449F1B
+}
+
+.view-topics .views-field-title a:hover,
+.view-albums-with-tags .views-field-title a:hover{
+  color: #32710D;
+}
+
+.view-topics  .views-row,
+.view-albums-with-tags  .views-row{
+    border-bottom: 1px solid #999999;
+    clear: both;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.view-topics .views-field-picture .field-content,
+.view-albums-with-tags .views-field-picture .field-content{
+   float: left;
+    margin-bottom: 5px;
+    margin-top: 0 !important;
+    width: 148px;
+}
+
+.view-topics  .views-field-nid,
+.view-albums-with-tags  .views-field-nid{
+  clear: both;
+}
+
+.view-topics  .views-field-nid img,
+.view-albums-with-tags  .views-field-nid img{
+  border: 1px solid #aeaeae;
+}
+
+.view-topics  .views-field-nid td,
+.view-albums-with-tags  .views-field-nid td{
+  padding-left: 10px;
+}
+
+.view-topics .views-field-name,
+.view-albums-with-tags .views-field-name{
+  clear: both;
+  float: left;
+}
+
+.view-topics .views-field-nid .view-content,
+.view-albums-with-tags .views-field-nid .view-content{
+  float: right;
+}
+
+.view-topics  .views-field-nid-1,
+.view-albums-with-tags .views-field-nid-1{
+  clear: both;
+} 
+
+.hidden{
+  display: none;
+}
+
+.node .field-name-field-photo{
+  clear: both;
+}
+
+.view-all-photos td{
+  width: 150px;
+  padding: 10px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.view-all-photos td img{
+  border: 1px solid #aeaeae;
+}  
+
+.ui-tabs-hide{
+  display: none;
+}
+
+#tabs{
+  border: none;
+  background: none;
+}
+
+#tabs .ui-tabs-nav {
+    border-bottom: 1px solid #CCCCCC;
+    font: bold 12px/22px Verdana;
+    margin: 0 0 10px;
+    padding: 0 10px 0 0 !important;
+}
+
+#tabs .ui-tabs-nav  li{
+   background: none repeat scroll 0 0 transparent;
+    display: inline;
+    list-style-type: none;
+    padding: 2px;
+    white-space: nowrap;
+    border: none;
+}
+
+#tabs .ui-widget-content{
+  border: 0px;
+}
+
+#tabs .ui-widget-header{
+    border-bottom: 1px solid #CCCCCC;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    font: bold 12px/22px Verdana;
+    margin: 0;
+    padding: 0 10px 0 0 !important;
+    background: none;
+    height: 40px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+#tabs .ui-tabs-nav a{
+  background: url("../images/arrows.gif") no-repeat scroll center 33px transparent;
+  color: #999999;
+  font-family: arial;
+  font-size: 20px;
+  font-weight: normal;
+  padding-bottom: 17px;
+}
+
+#tabs .ui-tabs-nav li.ui-tabs-selected a{
+  background: url("../images/arrows.gif") no-repeat scroll center -13px transparent;
+  color: #333333;
+}
+
+.permalink{
+  display: none;
+} 
+
+.filter-wrapper{
+  display: none;
+} 
+
+.wysiwyg-toggle-wrapper{
+  display: none;
+}
+
+.node-orgs.node-teaser .comment-new-comments,
+.node-chat.node-teaser .comment-new-comments,
+.node-orgs.node-teaser .comment-add,
+.node-chat.node-teaser .comment-add{
+  display: none;  
+}
+
+.node-teaser h2.node-title{
+  border: 0px;
+}
+
+.view-organization .views-row,
+.view-chat .views-row {
+  border-bottom: 1px dotted #999999;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.view-list-of-tags ul{
+  padding-left: 0px;
+}
+
+.view-list-of-tags ul li{
+  list-style: none;
+}  
+
+.view-list-of-tags h2 {
+  background: url("/misc/menu-leaf.png") left 5px no-repeat;
+  padding-left: 15px; 
+}
+
+.view-list-of-tags a{
+  font-size: 14px;
+}
+
+.view-list-of-tags a img{
+  display: block;
+  float: left;
+  margin-right: 10px;
+}
+
+.view-list-of-tags .views-row{
+  clear: both;
+  padding-top: 5px;
+}
+
+
+
+
+.comment {
+    border-bottom: 1px dashed;
+    margin-bottom: 10px;
+}
+
+.page-top{
+  background: #ED812B;
+} 
+
+.page-top #block-menu-menu-headmenu a{
+  color: #ffffff;
+}
+
+.page-top #block-menu-menu-headmenu a:hover{
+  color: #ffffff;
+}
+
+.page-top-inline{
+  width: 980px;
+  margin: 0 auto;
+  height: 121px;
+  position: relative;
+}
+
+#block-nice-menus-1{
+  margin-bottom: 0px;
+
+}
+
+#nice-menu-1{
+  margin: 0 auto;
+  width: 950px;
+  margin-top: 35px;
+}
+
+#nice-menu-1 li{
+   border: none;
+   background: none !important;
+   margin-right: 10px;
+
+}
+
+#nice-menu-1 li a{
+  color: #ffffff;
+  padding-top: 15px;
+}
+
+#nice-menu-1  .menu-1017 a{
+background: url("../images/home.png") center top no-repeat;
+}
+
+#nice-menu-1  .menu-1021 a{
+
+}
+
+#nice-menu-1  .menu-1334 a{
+
+}
+
+#nice-menu-1  .menu-1018 a{
+
+}
+#nice-menu-1  .menu-1749  a{
+
+}
+
+#nice-menu-1  .menu-2714 a{
+
+}
+
+#nice-menu-1  .menu-3398 a{
+
+}
+
+.node-tovar.node-teaser,
+.view-all-in-front .node-teaser{
+    border-bottom: 1px solid #999999;
+    clear: both;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.user-online{
+  margin-top: -16px;
+}
+
+blockquote{
+	background-color: #F6F6F6;
+	border: 1px solid #DDDDDD;
+	padding: 1em;
+}
+
+blockquote div{
+  font-weight: bold;
+}
+
+.view-topics .views-field-php{
+  float: left;
+  clear:both;
+  margin-top: -5px;
+}
+
+.comment .user-picture img{
+  width: 128px;
+  height: 128px;
+}
+
+.comment .user-picture .user-online img{
+  width: 62px;
+  height: 11px;
+}
+
+.indented .indented .indented .indented{
+  margin-left: 0px;
+}
+
+#block-block-2{
+  clear: both;
+  float: right;
+  padding-right: 10px;
+}
+
+#block-block-3{
+  clear: left;
+  float: left;
+  margin-top: 20px;
+}
+
+.privatemsg-message-column {
+    width: 73%;
+}
+
+ .view-list-of-tags li{
+   margin-bottom: 4px !important;
+   font-weight: bold;
+ }
+ 
+ .header-info{
+   float: right;
+   margin-top: 30px;
+   width: 400px;
+   color: #D02DEC;
+   font-size: 16px;
+ }
+ 
+ #block-uc-cart-cart ul.links {
+  padding-left: 0px;
+ }
+ 
+ .node-photo .list-price,
+ .node-photo .cost,
+ .node-photo .sell-price{
+  display: none;
+ }
+ 
+ .view-uc-orders-user table{
+   width: 100%;
+ }
+ 
+ .view-my-orders table{
+   width: 100%;
+ }
+ 
+.view-my-orders td{
+
+  padding: 5px;
+}
+
+.add-to-cart .form-submit{
+  color: #ffffff;
+  background: #c723e4;
+  border: 1px solid #b700fb;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;  
+  padding: 4px 8px 4px 8px;
+  cursor: pointer;
+}
+
+.add-to-cart .form-submit:hover{
+  background: #b700fb;
+  border: 1px solid #5e0081;
+}
+
+/**
+ * @file
+ * Form Styling
+ */
+
+
+.form-item /* Wrapper for a form element (or group of form elements) and its label */ {
+  margin: 1.5em 0;
+}
+
+.form-item input.error,
+.form-item textarea.error,
+.form-item select.error /* Highlight the form elements that caused a form submission error */ {
+  border: 1px solid #c00;
+}
+
+.form-item label /* The label for a form element */ {
+  display: block;
+  font-weight: bold;
+}
+
+.form-item label.option /* The label for a radio button or checkbox */ {
+  display: inline;
+  font-weight: normal;
+}
+
+.form-required /* The part of the label that indicates a required field */ {
+  color: #c00;
+}
+
+.form-item .description /* The descriptive help text (separate from the label) */ {
+  font-size: 0.85em;
+}
+
+.form-checkboxes .form-item,
+.form-radios .form-item /* Pack groups of checkboxes and radio buttons closer together */ {
+  margin: 0; /* Drupal core uses "0.4em 0" */
+}
+
+.form-submit /* The submit button */ {
+}
+
+.container-inline div,
+.container-inline label /* Inline labels and form divs */ {
+  display: inline;
+}
+
+.tips /* Tips for Drupal's input formats */ {
+}
+
+
+/*
+ * Password confirmation
+ */
+.password-parent,
+.confirm-parent {
+  margin: 0;
+}
+
+
+/*
+ * Search (search-block-form.tpl.php)
+ */
+#block-search-form /* Wrapper for the search form */ {
+}
+
+
+/*
+ * Drupal's default login form block
+ */
+#user-login-form {
+  text-align: left; /* LTR */
+}
+
+
+/*
+ * OpenID
+ *
+ * The default styling for the OpenID login link seems to assume Garland's
+ * styling of list items.
+ */
+
+#user-login-form ul /* OpenID creates a new ul above the login form's links. */ {
+  margin-bottom: 0; /* Position OpenID's ul next to the rest of the links. */
+}
+
+html.js #user-login-form li.openid-link,
+#user-login-form li.openid-link /* The "Log in using OpenID" link. */ {
+  margin-top: 1.5em;
+  margin-left: -20px; /* LTR */ /* Un-do some of the padding on the ul list. */
+}
+
+#user-login-form li.user-link /* The "Cancel OpenID login" link. */ {
+  margin-top: 1.5em;
+}
+
+#user-login ul {
+  margin: 1.5em 0;
+}
+
+
+/*
+ * Drupal admin tables
+ *
+ * We overrode these styles in html-reset.css, but restore them for the admin
+ * section of the site.
+ */
+
+form th {
+  text-align: left; /* LTR */
+  padding-right: 1em; /* LTR */
+  border-bottom: 3px solid #ccc;
+}
+
+form tbody {
+  border-top: 1px solid #ccc;
+}
+
+form tr.even {
+  background-color: #fff;
+}
+
+form table .item-list ul {
+  margin: 0;
+}
+
+#comments {
+  margin: 1.5em 0;
+}
+
+.comment-preview {
+  background-color: #ffffea;
+}
+
+.new {
+  color: #c00;
+}
+
+/*! fancyBox v2.0.6 fancyapps.com | fancyapps.com/fancybox/#license */
+.fancybox-tmp iframe, .fancybox-tmp object {
+	vertical-align: top;
+	padding: 0;
+	margin: 0;
+}
+
+.fancybox-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 8020;
+}
+
+.fancybox-skin {
+	position: relative;
+	padding: 0;
+	margin: 0;
+	background: #f9f9f9;
+	color: #444;
+	text-shadow: none;
+	-webkit-border-radius: 4px;
+	   -moz-border-radius: 4px;
+	        border-radius: 4px;
+}
+
+.fancybox-opened {
+	z-index: 8030;
+}
+
+.fancybox-opened .fancybox-skin {
+	-webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+	   -moz-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+	        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.fancybox-outer, .fancybox-inner {
+	padding: 0;
+	margin: 0;
+	position: relative;
+	outline: none;
+}
+
+.fancybox-inner {
+	overflow: hidden;
+}
+
+.fancybox-type-iframe .fancybox-inner {
+	-webkit-overflow-scrolling: touch;
+}
+
+.fancybox-error {
+	color: #444;
+	font: 14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
+	margin: 0;
+	padding: 10px;
+}
+
+.fancybox-image, .fancybox-iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	vertical-align: top;
+}
+
+.fancybox-image {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
+	background-image: url('fancybox_sprite.png');
+}
+
+#fancybox-loading {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -22px;
+	margin-left: -22px;
+	background-position: 0 -108px;
+	opacity: 0.8;
+	cursor: pointer;
+	z-index: 8020;
+}
+
+#fancybox-loading div {
+	width: 44px;
+	height: 44px;
+	background: url('fancybox_loading.gif') center center no-repeat;
+}
+
+.fancybox-close {
+	position: absolute;
+	top: -18px;
+	right: -18px;
+	width: 36px;
+	height: 36px;
+	cursor: pointer;
+	z-index: 8040;
+}
+
+.fancybox-nav {
+	position: absolute;
+	top: 0;
+	width: 40%;
+	height: 100%;
+	cursor: pointer;
+	background: transparent url('blank.gif'); /* helps IE */
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	z-index: 8040;
+}
+
+.fancybox-prev {
+	left: 0;
+}
+
+.fancybox-next {
+	right: 0;
+}
+
+.fancybox-nav span {
+	position: absolute;
+	top: 50%;
+	width: 36px;
+	height: 34px;
+	margin-top: -18px;
+	cursor: pointer;
+	z-index: 8040;
+	visibility: hidden;
+}
+
+.fancybox-prev span {
+	left: 20px;
+	background-position: 0 -36px;
+}
+
+.fancybox-next span {
+	right: 20px;
+	background-position: 0 -72px;
+}
+
+.fancybox-nav:hover span {
+	visibility: visible;
+}
+
+.fancybox-tmp {
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+	padding: 0;
+	overflow: visible;
+	visibility: hidden;
+}
+
+/* Overlay helper */
+
+#fancybox-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	display: none;
+	z-index: 8010;
+	background: #000;
+}
+
+#fancybox-overlay.overlay-fixed {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+}
+
+/* Title helper */
+
+.fancybox-title {
+	visibility: hidden;
+	font: normal 13px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
+	position: relative;
+	text-shadow: none;
+	z-index: 8050;
+}
+
+.fancybox-opened .fancybox-title {
+	visibility: visible;
+}
+
+.fancybox-title-float-wrap {
+	position: absolute;
+	bottom: 0;
+	right: 50%;
+	margin-bottom: -35px;
+	z-index: 8030;
+	text-align: center;
+}
+
+.fancybox-title-float-wrap .child {
+	display: inline-block;
+	margin-right: -100%;
+	padding: 2px 20px;
+	background: transparent; /* Fallback for web browsers that doesn't support RGBa */
+	background: rgba(0, 0, 0, 0.8);
+	-webkit-border-radius: 15px;
+	   -moz-border-radius: 15px;
+	        border-radius: 15px;
+	text-shadow: 0 1px 2px #222;
+	color: #FFF;
+	font-weight: bold;
+	line-height: 24px;
+	white-space: nowrap;
+}
+
+.fancybox-title-outside-wrap {
+	position: relative;
+	margin-top: 10px;
+	color: #fff;
+}
+
+.fancybox-title-inside-wrap {
+	margin-top: 10px;
+}
+
+.fancybox-title-over-wrap {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	color: #fff;
+	padding: 10px;
+	background: #000;
+	background: rgba(0, 0, 0, .8);
+}
+
+#fancybox-buttons {
+	position: fixed;
+	left: 0;
+	width: 100%;
+	z-index: 8050;
+}
+
+#fancybox-buttons.top {
+	top: 10px;
+}
+
+#fancybox-buttons.bottom {
+	bottom: 10px;
+}
+
+#fancybox-buttons ul {
+	display: block;
+	width: 170px;
+	height: 30px;
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+	background: #111;
+	-webkit-box-shadow: 0 1px 3px #000,0 0 0 1px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.05);
+	-moz-box-shadow: 0 1px 3px #000,0 0 0 1px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.05);
+	background: #111 -webkit-gradient(linear,0% 0%,0% 100%,from(rgba(255,255,255,.2)),color-stop(.5,rgba(255,255,255,.15)),color-stop(.5,rgba(255,255,255,.1)),to(rgba(255,255,255,.15)));
+	background: #111 -moz-linear-gradient(top,rgba(255,255,255,.2) 0%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.15) 100%);
+	border-radius: 3px;
+}
+
+#fancybox-buttons ul li {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+#fancybox-buttons a {
+	display: block;
+	width: 30px;
+	height: 30px;
+	text-indent: -9999px;
+	background-image: url('fancybox_buttons.png');
+	background-repeat: no-repeat;
+	outline: none;
+}
+
+#fancybox-buttons a.btnPrev {
+	width: 32px;
+	background-position: 6px 0;
+}
+
+#fancybox-buttons a.btnNext {
+	background-position: -33px 0;
+	border-right: 1px solid #3e3e3e;
+}
+
+#fancybox-buttons a.btnPlay {
+	background-position: 0 -30px;
+}
+
+#fancybox-buttons a.btnPlayOn {
+	background-position: -30px -30px;
+}
+
+#fancybox-buttons a.btnToggle {
+	background-position: 3px -60px;
+	border-left: 1px solid #111;
+	border-right: 1px solid #3e3e3e;
+	width: 35px
+}
+
+#fancybox-buttons a.btnToggleOn {
+	background-position: -27px -60px;
+}
+
+#fancybox-buttons a.btnClose {
+	border-left: 1px solid #111;
+	width: 38px;
+	background-position: -57px 0px;
+}
+
+#fancybox-buttons a.btnDisabled {
+	opacity : 0.5;
+	cursor: default;
+}
+
+#fancybox-thumbs {
+	position: fixed;
+	left: 0;
+	width: 100%;
+	overflow: hidden;
+	z-index: 8050;
+}
+
+#fancybox-thumbs.bottom {
+	bottom: 2px;
+}
+
+#fancybox-thumbs.top {
+	top: 2px;
+}
+
+#fancybox-thumbs ul {
+	position: relative;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#fancybox-thumbs ul li {
+	float: left;
+	padding: 1px;
+	opacity: 0.5;
+}
+
+#fancybox-thumbs ul li.active {
+	opacity: 0.75;
+	padding: 0;
+	border: 1px solid #fff;
+}
+
+#fancybox-thumbs ul li:hover {
+	opacity: 1;
+}
+
+#fancybox-thumbs ul li a {
+	display: block;
+	position: relative;
+	overflow: hidden;
+	border: 1px solid #222;
+	background: #111;
+	outline: none;
+}
+
+#fancybox-thumbs ul li img {
+	display: block;
+	position: relative;
+	border: 0;
+	padding: 0;
+}
+
+.fancybox-title  a{
+  color: #ffffff;
+}
+
+.view-all-photos td ul li{
+  text-align: left;
+  font-size: 10px;
+}
+
+a.select-domain{
+  background: #ffffff;
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  display: block;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  -webkit-border-bottom-right-radius: 10px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-bottomright: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  -webkit-box-shadow: 0px 0px 4px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    0px 0px 4px rgba(50, 50, 50, 0.75);
+  box-shadow:         0px 0px 4px rgba(50, 50, 50, 0.75);
+}
+
+.domain-letter{
+  float: left;
+  width: 31%;
+  padding-right: 2%;
+}
+
+#nice-menu-1 .menu-1018 a{
+  background: url("../images/camera_icon.png") top center no-repeat;
+  z-index: 199;
+  width: 50px;
+  height: 35px;
+  display: block;
+  padding-top: 29px;
+}
+
+#nice-menu-1 .menu-2714 a{
+  background: url("../images/news_icon.png") top center no-repeat;
+  z-index: 199;
+  width: 100px;
+  height: 40px;
+  display: block;
+  padding-top: 29px;
+}
+
+#nice-menu-1 .menu-1749 a{
+  background: url("../images/talk_icon.png") top center no-repeat;
+  z-index: 199;
+  width: 50px;
+  height: 35px;
+  display: block;
+  padding-top: 29px;
+}
+
+#nice-menu-1 .menu-3398 a{
+  background: url("../images/t-shirt_icon.png") top center no-repeat;
+  z-index: 199;
+  width: 50px;
+  height: 35px;
+  display: block;
+  padding-top: 29px;
+}
+
+#nice-menu-1 .menu-4640 a{
+  background: url("../images/white_question.png") center 3px no-repeat;
+  z-index: 199;
+  width: 50px;
+  height: 35px;
+  display: block;
+  padding-top: 29px;
+}
+
+#nice-menu-1 .menu-1902 a{
+  background: url("../images/settings_icon.png") top center no-repeat;
+  z-index: 199;
+  width: 100px;
+  height: 40px;
+  display: block;
+  padding-top: 29px;
+}
+
+.page-user-selling table,
+.page-user-relationships table{
+  width: 100%;
+}
+
+.page-user-selling table th{
+  font-size: 14px;
+}
+
+#nice-menu-1 .menu-1334 a{
+  background: url("../images/users_icon.png") top center no-repeat;
+  z-index: 199;
+  width: 61px;
+  height: 35px;
+  display: block;
+  padding-top: 29px;
+}
+
+.buyed table{
+  width: 100%;
+}

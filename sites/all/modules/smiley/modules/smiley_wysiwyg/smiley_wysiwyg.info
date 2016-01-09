@@ -1,0 +1,13 @@
+name = "Smiley Wysiwyg"
+description = "Smiley plugin for WYSIWYG editors."
+core = 7.x
+package = Content authoring
+dependencies[] = wysiwyg
+dependencies[] = smiley
+
+; Information added by drupal.org packaging script on 2013-07-14
+version = "7.x-1.0"
+core = "7.x"
+project = "smiley"
+datestamp = "1373840771"
+

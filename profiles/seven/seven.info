@@ -1,0 +1,8 @@
+name = Совместные покупки
+description = Сборка совместные покупки от drupalbook.ru
+version = VERSION
+core = 7.x
+dependencies[] = block
+files[] = seven.profile
+
+
