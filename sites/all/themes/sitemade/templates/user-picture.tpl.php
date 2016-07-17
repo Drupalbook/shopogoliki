@@ -21,7 +21,8 @@
   <div class="user-picture">
     <?php print $user_picture; ?>
 	
-<?php	
+<?php
+    // @todo Check user picture exists. Add link to add user avatar.
 if ($account->uid != 0){
 
   $user2 = user_load($account->uid); 
