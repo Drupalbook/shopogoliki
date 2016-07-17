@@ -31,7 +31,7 @@ class UserRelationshipsBaseTestCase extends DrupalWebTestCase {
    * Create a number of relationship types.
    *
    * The created types are stored in $this->rtypes with the keys oneway, twoway,
-   * approval, approval-oneway, approval-reciprocal.
+   * approval, approval_oneway, approval_reciprocal.
    *
    * @param $create_types
    *   An array of type identifiers which should be created. Defaults to all.
@@ -40,7 +40,7 @@ class UserRelationshipsBaseTestCase extends DrupalWebTestCase {
     $this->rtypes = array();
 
     if (empty($create_types)) {
-      $create_types = array('oneway', 'twoway', 'approval', 'approval-oneway', 'approval-reciprocal');
+      $create_types = array('oneway', 'twoway', 'approval', 'approval_oneway', 'approval_reciprocal');
     }
 
     // Flush static cache.
@@ -49,6 +49,7 @@ class UserRelationshipsBaseTestCase extends DrupalWebTestCase {
     if (in_array('oneway', $create_types)) {
       $rtype = new StdClass;
       $rtype->name = 'oneway';
+      $rtype->machine_name = 'oneway';
       $rtype->plural_name = 'oneways';
       $rtype->is_oneway = TRUE;
       $rtype->requires_approval = FALSE;
@@ -71,6 +72,7 @@ class UserRelationshipsBaseTestCase extends DrupalWebTestCase {
     if (in_array('approval', $create_types)) {
       $rtype = new StdClass;
       $rtype->name = 'approval';
+      $rtype->machine_name = 'approval';
       $rtype->plural_name = 'approvals';
       $rtype->is_oneway = FALSE;
       $rtype->requires_approval = TRUE;
@@ -79,28 +81,30 @@ class UserRelationshipsBaseTestCase extends DrupalWebTestCase {
       $this->rtypes['approval'] = $rtype;
     }
 
-    if (in_array('approval-oneway', $create_types)) {
+    if (in_array('approval_oneway', $create_types)) {
       $rtype = new StdClass;
       $rtype->name = 'approval-oneway';
+      $rtype->machine_name = 'approval_oneway';
       $rtype->plural_name = 'approvals-oneway';
       $rtype->is_oneway = TRUE;
       $rtype->requires_approval = TRUE;
       $rtype->expires_val = 0;
       user_relationships_type_save($rtype);
-      $this->rtypes['approval-oneway'] = $rtype;
+      $this->rtypes['approval_oneway'] = $rtype;
     }
 
     //#348025 reciprocal one-way relationships
-    if (in_array('approval-reciprocal', $create_types)) {
+    if (in_array('approval_reciprocal', $create_types)) {
       $rtype = new StdClass;
       $rtype->name = 'approval-reciprocal';
+      $rtype->machine_name = 'approval_reciprocal';
       $rtype->plural_name = 'approvals-reciprocal';
       $rtype->is_oneway = TRUE;
       $rtype->is_reciprocal = TRUE;
       $rtype->requires_approval = TRUE;
       $rtype->expires_val = 0;
       user_relationships_type_save($rtype);
-      $this->rtypes['approval-reciprocal'] = $rtype;
+      $this->rtypes['approval_reciprocal'] = $rtype;
     }
 
     // Flush static cache.
@@ -148,6 +152,7 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
     // Enforce uniqueness of relationship type name.
     $rtype = new StdClass;
     $rtype->name = 'oneway';
+    $rtype->machine_name = 'oneway';
     $rtype->plural_name = 'oneways';
     $rtype->is_oneway = TRUE;
     $rtype->requires_approval = FALSE;
@@ -157,6 +162,7 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
     // Verify default value of expires_val.
     $rtype = new StdClass;
     $rtype->name = 'expires_default_test';
+    $rtype->machine_name = 'expires_default_test';
     $rtype->plural_name = 'expires_default_test_plural';
     $rtype->is_oneway = TRUE;
     $rtype->requires_approval = FALSE;
@@ -179,16 +185,16 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
     $this->createDefaultRelationshipTypes();
 
     $permissions = array(
-      'can have ' . $this->rtypes['oneway']->name . ' relationships',
-      'can request ' . $this->rtypes['oneway']->name . ' relationships',
-      'can have ' . $this->rtypes['twoway']->name . ' relationships',
-      'can request ' . $this->rtypes['twoway']->name . ' relationships',
-      'can have ' . $this->rtypes['approval-oneway']->name . ' relationships',
-      'can request ' . $this->rtypes['approval-oneway']->name . ' relationships',
-      'can have ' . $this->rtypes['approval']->name . ' relationships',
-      'can request ' . $this->rtypes['approval']->name . ' relationships',
-      'can have ' . $this->rtypes['approval-reciprocal']->name . ' relationships',
-      'can request ' . $this->rtypes['approval-reciprocal']->name . ' relationships',
+      'can have ' . $this->rtypes['oneway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['oneway']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['twoway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['twoway']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['approval_oneway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['approval_oneway']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['approval']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['approval']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['approval_reciprocal']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['approval_reciprocal']->machine_name . ' relationships',
     );
     $u1 = $this->drupalCreateUser($permissions);
     $u2 = $this->drupalCreateUser($permissions);
@@ -257,8 +263,8 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
   function testNoOnewayRelationships() {
     $this->createDefaultRelationshipTypes(array('twoway'));
     $permissions = array(
-      'can have ' . $this->rtypes['twoway']->name . ' relationships',
-      'can request ' . $this->rtypes['twoway']->name . ' relationships',
+      'can have ' . $this->rtypes['twoway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['twoway']->machine_name . ' relationships',
     );
     $u1 = $this->drupalCreateUser($permissions);
     $u2 = $this->drupalCreateUser($permissions);
@@ -277,14 +283,14 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
   function testUserRelationshipsLoadDuplicates() {
     $this->createDefaultRelationshipTypes();
     $permissions = array(
-      'can have ' . $this->rtypes['oneway']->name . ' relationships',
-      'can request ' . $this->rtypes['oneway']->name . ' relationships',
-      'can have ' . $this->rtypes['twoway']->name . ' relationships',
-      'can request ' . $this->rtypes['twoway']->name . ' relationships',
-      'can have ' . $this->rtypes['approval-oneway']->name . ' relationships',
-      'can request ' . $this->rtypes['approval-oneway']->name . ' relationships',
-      'can have ' . $this->rtypes['approval']->name . ' relationships',
-      'can request ' . $this->rtypes['approval']->name . ' relationships',
+      'can have ' . $this->rtypes['oneway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['oneway']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['twoway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['twoway']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['approval_oneway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['approval_oneway']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['approval']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['approval']->machine_name . ' relationships',
     );
     $u1 = $this->drupalCreateUser($permissions);
     $u2 = $this->drupalCreateUser($permissions);
@@ -337,10 +343,10 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
 
     //test approved
     //load pending records
-    $this->assertTrue(user_relationships_can_request($u1, $this->rtypes['approval-oneway']));
-    user_relationships_request_relationship($u1, $u2, $this->rtypes['approval-oneway']->rtid, FALSE);
-    $this->assertTrue(user_relationships_can_request($u3, $this->rtypes['approval-oneway']));
-    user_relationships_request_relationship($u3, $u1, $this->rtypes['approval-oneway']->rtid, FALSE);
+    $this->assertTrue(user_relationships_can_request($u1, $this->rtypes['approval_oneway']));
+    user_relationships_request_relationship($u1, $u2, $this->rtypes['approval_oneway']->rtid, FALSE);
+    $this->assertTrue(user_relationships_can_request($u3, $this->rtypes['approval_oneway']));
+    user_relationships_request_relationship($u3, $u1, $this->rtypes['approval_oneway']->rtid, FALSE);
 
     $result = user_relationships_load(array('approved' => 1));
     $this->assertEqual(count($result), 5);
@@ -349,11 +355,11 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
     $result = user_relationships_load(array('approved' => 1), array('sort' => 'rtid'));
     $this->assertEqual(count($result[$this->rtypes['oneway']->rtid]), 2);
     $this->assertEqual(count($result[$this->rtypes['twoway']->rtid]), 3);
-    $this->assertFalse(isset($result[$this->rtypes['approval-oneway']->rtid]));
+    $this->assertFalse(isset($result[$this->rtypes['approval_oneway']->rtid]));
     $result = user_relationships_load(array('approved' => 1), array('sort' => 'rtid', 'include_twoway_reverse' => 1));
     $this->assertEqual(count($result[$this->rtypes['oneway']->rtid]), 2);
     $this->assertEqual(count($result[$this->rtypes['twoway']->rtid]), 6);
-    $this->assertFalse(isset($result[$this->rtypes['approval-oneway']->rtid]));
+    $this->assertFalse(isset($result[$this->rtypes['approval_oneway']->rtid]));
     //test pending
     $result = user_relationships_load(array('approved' => 0));
     $this->assertEqual(count($result), 2);
@@ -361,10 +367,10 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
     $this->assertEqual(count($result), 2);
     $result = user_relationships_load(array('approved' => 0), array('sort' => 'rtid'));
     $this->assertEqual(count($result), 1);
-    $this->assertEqual(count($result[$this->rtypes['approval-oneway']->rtid]), 2);
+    $this->assertEqual(count($result[$this->rtypes['approval_oneway']->rtid]), 2);
     $result = user_relationships_load(array('approved' => 0), array('sort' => 'rtid', 'include_twoway_reverse' => 1));
     $this->assertEqual(count($result), 1);
-    $this->assertEqual(count($result[$this->rtypes['approval-oneway']->rtid]), 2);
+    $this->assertEqual(count($result[$this->rtypes['approval_oneway']->rtid]), 2);
     //test user and pending
     $result = user_relationships_load(array('user' => $u1->uid, 'approved' => 0));
     $this->assertEqual(count($result), 2);
@@ -392,9 +398,9 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
     $this->assertTrue(user_relationships_can_request($u1, $this->rtypes['approval']));
     $this->assertTrue(user_relationships_can_request($u3, $this->rtypes['approval']));
     $this->assertTrue(user_relationships_can_request($u4, $this->rtypes['approval']));
-    $this->assertTrue(user_relationships_can_request($u4, $this->rtypes['approval-oneway']));
-    user_relationships_request_relationship($u4, $u2, $this->rtypes['approval-oneway']->rtid, FALSE);
-    user_relationships_request_relationship($u3, $u4, $this->rtypes['approval-oneway']->rtid, FALSE);
+    $this->assertTrue(user_relationships_can_request($u4, $this->rtypes['approval_oneway']));
+    user_relationships_request_relationship($u4, $u2, $this->rtypes['approval_oneway']->rtid, FALSE);
+    user_relationships_request_relationship($u3, $u4, $this->rtypes['approval_oneway']->rtid, FALSE);
     user_relationships_request_relationship($u1, $u2, $this->rtypes['approval']->rtid, FALSE);
     user_relationships_request_relationship($u4, $u2, $this->rtypes['approval']->rtid, FALSE);
     user_relationships_request_relationship($u3, $u4, $this->rtypes['approval']->rtid, FALSE);
@@ -475,9 +481,9 @@ class UserRelationshipsTestCase extends UserRelationshipsBaseTestCase {
   function testUserRelationshipsReciprocalTypes() {
     $this->createDefaultRelationshipTypes();
     $rtypes = user_relationships_types_load();
-    $rtype = $rtypes[$this->rtypes['approval-reciprocal']->rtid];
+    $rtype = $rtypes[$this->rtypes['approval_reciprocal']->rtid];
     $this->assertTrue($rtype->is_reciprocal);
-    $rtype = $rtypes[$this->rtypes['approval-oneway']->rtid];
+    $rtype = $rtypes[$this->rtypes['approval_oneway']->rtid];
     $this->assertFalse($rtype->is_reciprocal);
     $rtype = $rtypes[$this->rtypes['approval']->rtid];
     $this->assertFalse($rtype->is_reciprocal);
@@ -511,6 +517,7 @@ class UserRelationshipsTypesTestCase extends DrupalWebTestCase {
     // Create relationship type.
     $relationship_type = (object) array(
       'name' => $this->randomName(),
+      'machine_name' => strtolower($this->randomName()),
       'plural_name' => $this->randomName(),
       'reverse_name' => $this->randomName(),
       'reverse_plural_name' => $this->randomName(),
@@ -588,7 +595,7 @@ class UserRelationshipsI18nTestCase extends DrupalWebTestCase {
    */
   function testTypeTranslation() {
 
-    $admin = $this->drupalCreateUser(array('administer languages', 'access administration pages', 'administer user relationships', 'translate interface'));
+    $admin = $this->drupalCreateUser(array('administer languages', 'access administration pages', 'administer user relationships', 'translate interface', 'translate user-defined strings'));
     $this->drupalLogin($admin);
 
     $this->addLanguage('de');
@@ -601,6 +608,7 @@ class UserRelationshipsI18nTestCase extends DrupalWebTestCase {
     // Create relationship type.
     $edit = array(
       'name' => $this->randomName(),
+      'machine_name' => strtolower($this->randomName()),
       'plural_name' => $this->randomName(),
       'reverse_name' => $this->randomName(),
       'reverse_plural_name' => $this->randomName(),

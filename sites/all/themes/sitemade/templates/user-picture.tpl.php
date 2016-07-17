@@ -28,7 +28,7 @@ if ($account->uid != 0){
    // Online status .
    $lastactive = ($user2->access) ? format_interval(time() - $user2->access) : t("Never");
    if ((REQUEST_TIME - $user2->access) < variable_get('user_block_seconds_online', 1200)){
-	 $onlineimage =  '<div class="user-online"><img src="' . base_path(). path_to_theme() . '/images/online.gif" /></div>';
+	 $onlineimage =  '<div class="user-online"><img src="' . base_path(). path_to_theme() . '/images/online.png" /></div>';
 	 print $onlineimage ;
    }
    

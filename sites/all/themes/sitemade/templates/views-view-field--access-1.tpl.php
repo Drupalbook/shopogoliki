@@ -26,6 +26,6 @@
 <?php
   $delta = time() - $output;
   if ($delta < 1800) {
-    print '<img src="/sites/all/themes/sitemade/images/online.gif" />';
+    print '<img src="' . drupal_get_path('theme', 'sitemade') . '/images/online.png" />';
   }
 ?>  

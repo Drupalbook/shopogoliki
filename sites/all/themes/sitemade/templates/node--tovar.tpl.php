@@ -116,7 +116,7 @@
   </div>
 
   <?php
-    if(in_array('модератор',$user->roles)){
+    if(in_array('seller', $user->roles)){
   ?>
       <div style="clear: both;">
         <ul class="links inline">

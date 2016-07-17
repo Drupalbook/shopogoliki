@@ -100,11 +100,15 @@ function smiley_filter_info() {
  * Smileys filter process callback.
  */
 function smiley_filter_process($text, $filter, $format) {
+  $smileys = smiley_get_all();
+  return smiley_process_text($text, $smileys);
+}
+
+/**
+ * Replaces smile codes in the text by corresponded images.
+ */
+function smiley_process_text($text, $smileys) {
   global $base_path;
-
-  $smileys = db_query('SELECT * FROM {smiley} WHERE status = 1')->fetchAll();
-
-  $chunks = preg_split('#(</?(?:code|pre)[^>]*>)#i', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
 
   $output = '';
   $ignore = 0;
@@ -113,6 +117,8 @@ function smiley_filter_process($text, $filter, $format) {
   if (!empty($css_class)) {
     $css_class = 'class="' . $css_class . '" ';
   }
+
+  $chunks = preg_split('#(</?(?:code|pre)[^>]*>)#i', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
 
   foreach ($chunks as $chunk) {
     if (preg_match('#(</?)(code|pre)[^>]*(>)#i', $chunk, $matches)) {
@@ -135,7 +141,7 @@ function smiley_filter_process($text, $filter, $format) {
             continue;
           }
 
-          $chunk = preg_replace('~(^|>|\s+|&nbsp;)(' . preg_quote($acronym, '~') . ')($|</|\s+|&nbsp;)~', '$1' . $image . '$3', $chunk);
+          $chunk = preg_replace('~(?<=^|>|\s|&nbsp;)(' . preg_quote($acronym, '~') . ')(?=$|</|<area\s*/?>|<base\s*/?>|<br\s*/?>|<col\s*/?>|<command\s*/?>|<embed\s*/?>|<hr\s*/?>|<img\s*/?>|<input\s*/?>|<link\s*/?>|<meta\s*/?>|<param\s*/?>|<source\s*/?>|\s|&nbsp;)~U', $image, $chunk);
         }
       }
     }
@@ -143,6 +149,14 @@ function smiley_filter_process($text, $filter, $format) {
   }
 
   return $output;
+}
+
+function smiley_get_all() {
+    $cache = &drupal_static(__FUNCTION__);
+    if (!isset($cache)) {
+        $cache = db_query('SELECT * FROM {smiley} WHERE status=1')->fetchAll();
+    }
+    return $cache;
 }
 
 /**

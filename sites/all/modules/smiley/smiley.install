@@ -42,7 +42,6 @@ function smiley_install() {
     '*man_in_love*'        => "*IN_LOVE*",
     '*bomb*'               => "@=",
     '*wacko*'              => "%) %-) :-$ :$ :wacko: :WACKO:",
-    '*mamba*'              => "*WASSUP* *SUP* *MAMBA* :MAMBA:",
     '*clapping*'           => "*BRAVO* :BRAVO: :bravo: :clapping:",
     '*ROFL*'               => "*ROFL* :ROFL: :rofl: :-)))) :-))))) :-)))))) :)))) :))))) :)))))) =)))) =))))) =))))))",
     '*pardon*'             => "*PARDON* =] :PARDON: :pardon:",

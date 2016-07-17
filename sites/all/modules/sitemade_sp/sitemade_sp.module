@@ -11,16 +11,6 @@
 function sitemade_sp_init() {
   drupal_add_library('system', 'ui.tabs');
   drupal_add_css(drupal_get_path('module', 'sitemade_sp') . '/sitemade_sp.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
-   
-  if($_SERVER['REQUEST_URI'] == '/taxonomy/term/31'){
-    drupal_goto('');
-  }
-  if($_SERVER['REQUEST_URI'] == '/user/1'){
-    global $user;
-    if($user->uid != 1){
-      header('Location: '.base_path());
-    }
-  }
 }
 
 /**
@@ -131,8 +121,8 @@ function sitemade_sp_form_alter(&$form, &$form_state, $form_id) {
       $none = $form['bundle_photo']['field_reftovar']['und']['#options']['_none'];
       unset($form['bundle_photo']['field_reftovar']['und']['#options']);
       $form['bundle_photo']['field_reftovar']['und']['#options']['_none'] = $none;
-      foreach($nodes as $nodeNid){
-        $form['bundle_photo']['field_reftovar']['und']['#options'][$nodeNid->nid] = $nodeNid->title;
+      foreach($nodes as $node_nid){
+        $form['bundle_photo']['field_reftovar']['und']['#options'][$node_nid->nid] = $node_nid->title;
       }
     }
   }
@@ -146,8 +136,8 @@ function sitemade_sp_form_alter(&$form, &$form_state, $form_id) {
     $none = $form['field_reftovar_nid']['#options']['All'];
     unset($form['field_reftovar_nid']['#options']);
     $form['field_reftovar_nid']['#options']['All'] = $none;
-    foreach($nodes as $nodeNid){
-      $form['field_reftovar_nid']['#options'][$nodeNid->nid] = $nodeNid->title;
+    foreach($nodes as $node_nid){
+      $form['field_reftovar_nid']['#options'][$node_nid->nid] = $node_nid->title;
     }
   }
 }

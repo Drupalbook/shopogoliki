@@ -8,9 +8,9 @@ dependencies[] = comment
 files[] = views/quote_handler_field_comment_link_quote.inc
 files[] = tests/quote.test
 
-; Information added by drupal.org packaging script on 2012-05-12
-version = "7.x-1.1-beta2"
+; Information added by Drupal.org packaging script on 2015-03-08
+version = "7.x-1.1-beta3"
 core = "7.x"
 project = "quote"
-datestamp = "1336806085"
+datestamp = "1425818287"
 

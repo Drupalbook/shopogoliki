@@ -52,7 +52,7 @@ module_load_include('inc', 'imagecache_canvasactions', 'canvasactions');
 module_load_include('inc', 'imagecache_canvasactions', 'rounded_corners');
 // imageapi extensions
 // @todo: this include won't work: refactor this whole including of files
-module_load_include('inc', 'imagcache_actions', 'image_overlay.inc');
+module_load_include('inc', 'imagecache_actions', 'image_overlay.inc');
 
 
 function imagecache_canvasactions_image_effect_info() {

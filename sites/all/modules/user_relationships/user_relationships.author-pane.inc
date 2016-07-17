@@ -75,13 +75,13 @@ function user_relationships_preprocess_author_pane(&$variables) {
       }
       $variables['user_relationships'] .= '<div class="author-pane-ur-link-item">';
       $variables['user_relationships'] .=
-        l('<span>' . t('Add @rel_name', array('@name' => format_username($account)) + user_relationships_type_translations($relationship)) . '</span>',
+        l('<span>' . t('Add @rel_name', user_relationships_type_translations($rtype->rtid)) . '</span>',
           "relationship/{$account->uid}/request/{$rtype->rtid}",
           array(
             'query' => drupal_get_destination(),
             'html' => TRUE,
             'attributes'  => array(
-              'title' => t('Become @name\'s @rel_name', array('@name' => format_username($account)) + user_relationships_type_translations($rtype)),
+              'title' => t('Become @name\'s @rel_name', array('@name' => format_username($account)) + user_relationships_type_translations($rtype->rtid)),
               'class' => $css_class
             ),
           )

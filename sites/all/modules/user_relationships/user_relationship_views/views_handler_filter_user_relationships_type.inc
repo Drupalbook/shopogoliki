@@ -111,7 +111,7 @@ class views_handler_filter_user_relationships_type extends views_handler_filter_
   }
 
   // Override so that text names typed by user do not get stored as the value
-  function value_submit() { }
+  function value_submit($form, &$form_state) { }
 
   // Override to do nothing.
   function get_value_options() { }

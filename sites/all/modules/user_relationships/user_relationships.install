@@ -31,6 +31,7 @@ function user_relationships_schema() {
   $schema['user_relationship_types'] = array(
     'fields' => array(
       'rtid'              => array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE),
+      'machine_name'      => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => ''),
       'name'              => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => ''),
       'plural_name'       => array('type' => 'varchar', 'length' => 255, 'default' => ''),
       'is_oneway'         => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0, 'size' => 'tiny'),
@@ -69,6 +70,7 @@ function user_relationships_schema() {
       ),
     ),
     'unique keys' => array(
+      'machine_name'  => array('machine_name'),
       'name'  => array('name'),
     ),
     'primary key' => array('rtid')
@@ -198,5 +200,47 @@ function user_relationships_update_7005() {
 
   foreach ($fields as $field => $definition) {
     db_add_field('user_relationship_types', $field, $definition);
+  }
+}
+
+/**
+ * Add machine name field.
+ */
+function user_relationships_update_7006() {
+  if (!db_field_exists('user_relationship_types', 'machine_name')) {
+    $field = array(
+      'type' => 'varchar',
+      'length' => 255,
+      'default' => '',
+    );
+
+    db_add_field('user_relationship_types', 'machine_name', $field);
+
+    // Set the machine name.
+    db_update('user_relationship_types')
+      ->expression('machine_name', 'rtid')
+      ->execute();
+
+    // Update any old permissions.
+    drupal_static_reset('user_relationships_types_load');
+    $types = user_relationships_types_load();
+    foreach ($types as $type) {
+      $permissions = array(
+        // Old => new.
+        'can have ' . $type->name . ' relationships' => 'can have ' . $type->machine_name . ' relationships',
+        'maintain ' . $type->name . ' relationships' => 'maintain ' . $type->machine_name . ' relationships',
+        'can request ' . $type->name . ' relationships' => 'can request ' . $type->machine_name . ' relationships',
+        'delete ' . $type->name . ' relationships' => 'delete ' . $type->machine_name . ' relationships',
+      );
+
+      foreach ($permissions as $old => $new) {
+        db_update('role_permission')
+          ->fields(array(
+              'permission' => $new
+            ))
+          ->condition('permission', $old)
+          ->execute();
+      }
+    }
   }
 }

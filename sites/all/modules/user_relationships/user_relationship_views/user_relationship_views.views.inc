@@ -38,6 +38,14 @@ function user_relationship_views_views_data() {
         'weight' => 0,
       ),
     ),
+    'rid' => array(
+      'title' => t('RID'),
+      'help' => t('Relationship ID of the relationship'),
+      'field' => array(
+        'handler' => 'views_handler_field_numeric',
+        'click sortable' => TRUE,
+      ),
+    ),
     'rtid' => array(
       'title' => t('RTID'),
       'help' => t('Type ID of the relationship'),
@@ -305,5 +313,15 @@ function user_relationship_views_views_data() {
       ),
     ),
   );
+  $tables['users']['ur_action'] = array(
+    'real field' => 'uid',
+    'field' => array(
+      'title' => t('User relationship add / remove action'),
+      'help' => t('This will generate a link to add or remove a user relationship with a given user.'),
+      'handler' => 'views_handler_field_user_relationships_action',
+    ),
+    'group' => t('User relationships'),
+  );
+
   return $tables;
 }

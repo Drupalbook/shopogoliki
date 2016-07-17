@@ -292,19 +292,19 @@ function user_relationships_permission() {
   ));
 
   foreach (user_relationships_types_load() as $type) {
-    $permissions['can have ' . $type->name . ' relationships'] = array(
+    $permissions['can have ' . $type->machine_name . ' relationships'] = array(
       'title' => t('Have %name relationships', array('%name' => $type->name)),
       'description' => t('The user may have relationships of this type.'),
     );
-    $permissions['maintain ' . $type->name . ' relationships'] = array(
+    $permissions['maintain ' . $type->machine_name . ' relationships'] = array(
       'title' => t('Maintain %name relationships', array('%name' => $type->name)),
       'description' => t('The user may approve or decline relationship requests of this type.'),
     );
-    $permissions['can request ' . $type->name . ' relationships'] = array(
+    $permissions['can request ' . $type->machine_name . ' relationships'] = array(
       'title' => t('Request %name relationships', array('%name' => $type->name)),
       'description' => t('The user may request relationships of this type.'),
     );
-    $permissions['delete ' . $type->name . ' relationships'] = array(
+    $permissions['delete ' . $type->machine_name . ' relationships'] = array(
       'title' => t('Delete %name relationships', array('%name' => $type->name)),
       'description' => t('The user may delete current relationships of this type.'),
     );
@@ -361,6 +361,18 @@ function user_relationships_user_cancel($edit, $account, $method) {
 }
 
 /**
+ * Implements hook_user_delete().
+ */
+function user_relationships_user_delete($account) {
+  db_delete('user_relationships')
+      ->condition(db_or()
+        ->condition('requester_id', $account->uid)
+        ->condition('requestee_id', $account->uid)
+      )
+      ->execute();
+}
+
+/**
  * Implements hook_activity_info().
  */
 function user_relationships_activity_info() {
@@ -375,6 +387,20 @@ function user_relationships_activity_info() {
   }
   return $info;
 }
+
+/**
+ * Public API for retrieving a specific relationship by machine name.
+ *
+ * @param $machine_name
+ *    The machine name identifying the relationship.
+ * @return
+ *    object of the requested relationship type
+ *
+ */
+function user_relationships_type_machine_name_load($machine_name) {
+  return user_relationships_type_load(array('machine_name' => $machine_name));
+}
+
 
 /**
  * Public API for retrieving a specific relationship
@@ -907,7 +933,7 @@ function user_relationships_user_access($permission, $relationship = NULL, $acco
   }
 
   foreach ($relationships as $r) {
-    $relationship_permission = str_replace('@relationship', $r->name, $permission);
+    $relationship_permission = str_replace('@relationship', $r->machine_name, $permission);
     if (user_access($relationship_permission, $account)) {
       return TRUE;
     }

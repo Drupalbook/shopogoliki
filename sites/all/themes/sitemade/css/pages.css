@@ -866,7 +866,7 @@ background: url("../images/home.png") center top no-repeat;
 }
 
 .user-online{
-  margin-top: -16px;
+  margin-top: -24px;
 }
 
 blockquote{
@@ -896,7 +896,7 @@ blockquote div{
 }
 
 .indented .indented .indented .indented{
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 #block-block-2{

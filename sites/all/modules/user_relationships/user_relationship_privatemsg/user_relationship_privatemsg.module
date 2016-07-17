@@ -229,6 +229,12 @@ function user_relationship_privatemsg_privatemsg_block_message($author, $recipie
     if ($setting == 'relationships' || ($setting == 'all_overridable' && $user_setting == 'on in relations')) {
       // Check if author is related.
       $relations = user_relationships_load(array('between' => array($author->uid, $recipient->uid)));
+      // Remove pending relationships.
+      foreach ($relations as $rid => $relation) {
+        if ($relation->requires_approval && empty($relation->approved)) {
+          unset($relations[$rid]);
+        }
+      }
       if (empty($relations)) {
         $blocked[] = array(
           'recipient' => privatemsg_recipient_key($recipient),

@@ -29,6 +29,7 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
     // Create relationship types.
     $rtype = new StdClass;
     $rtype->name = 'oneway';
+    $rtype->machine_name = 'oneway';
     $rtype->plural_name = 'oneways';
     $rtype->is_oneway = TRUE;
     $rtype->requires_approval = FALSE;
@@ -38,6 +39,7 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
 
     $rtype = new StdClass;
     $rtype->name = 'twoway';
+    $rtype->machine_name = 'twoway';
     $rtype->plural_name = 'twoways';
     $rtype->is_oneway = FALSE;
     $rtype->requires_approval = FALSE;
@@ -48,6 +50,7 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
     unset($rtype);
     $rtype = new StdClass;
     $rtype->name = 'approval';
+    $rtype->machine_name = 'approval';
     $rtype->plural_name = 'approvals';
     $rtype->is_oneway = FALSE;
     $rtype->requires_approval = TRUE;
@@ -58,12 +61,13 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
     unset($rtype);
     $rtype = new StdClass;
     $rtype->name = 'approval-oneway';
+    $rtype->machine_name = 'approval_oneway';
     $rtype->plural_name = 'approvals-oneway';
     $rtype->is_oneway = TRUE;
     $rtype->requires_approval = TRUE;
     $rtype->expires_val = 0;
     user_relationships_type_save($rtype);
-    $this->rtypes['approval-oneway'] = $rtype;
+    $this->rtypes['approval_oneway'] = $rtype;
 
     drupal_static_reset('user_relationships_types_load');
 
@@ -83,10 +87,10 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
    */
   function testAutoApprovalSettings() {
     $permissions = array(
-      'can have ' . $this->rtypes['oneway']->name . ' relationships',
-      'can request ' . $this->rtypes['oneway']->name . ' relationships',
-      'can have ' . $this->rtypes['twoway']->name . ' relationships',
-      'can request ' . $this->rtypes['twoway']->name . ' relationships',
+      'can have ' . $this->rtypes['oneway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['oneway']->machine_name . ' relationships',
+      'can have ' . $this->rtypes['twoway']->machine_name . ' relationships',
+      'can request ' . $this->rtypes['twoway']->machine_name . ' relationships',
       'view own twoway relationships',
       'view own oneway relationships',
     );
@@ -99,14 +103,14 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
     $u2 = $this->drupalCreateUser($permissions);
 
     // Two users with all required permissions.
-    $permissions[] = 'can have ' . $this->rtypes['approval-oneway']->name . ' relationships';
-    $permissions[] =  'can request ' . $this->rtypes['approval-oneway']->name . ' relationships';
-    $permissions[] =  'can have ' . $this->rtypes['approval']->name . ' relationships';
-    $permissions[] =  'can request ' . $this->rtypes['approval']->name . ' relationships';
+    $permissions[] = 'can have ' . $this->rtypes['approval_oneway']->machine_name . ' relationships';
+    $permissions[] = 'can request ' . $this->rtypes['approval_oneway']->machine_name . ' relationships';
+    $permissions[] = 'can have ' . $this->rtypes['approval']->machine_name . ' relationships';
+    $permissions[] = 'can request ' . $this->rtypes['approval']->machine_name . ' relationships';
     $permissions[] = 'maintain approval relationships';
-    $permissions[] = 'maintain approval-oneway relationships';
+    $permissions[] = 'maintain approval_oneway relationships';
     $permissions[] = 'view own approval relationships';
-    $permissions[] = 'view own approval-oneway relationships';
+    $permissions[] = 'view own approval_oneway relationships';
 
     $u3 = $this->drupalCreateUser($permissions);
     $u4 = $this->drupalCreateUser($permissions);
@@ -145,18 +149,18 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
     $this->assertText(t('Automatically approve relationship requests from other users'));
     $this->assertText(t('Receive e-mail notification of relationship activity'));
     $this->assertFieldByName('user_relationships_ui_auto_approve[' . $this->rtypes['approval']->rtid . ']');
-    $this->assertFieldByName('user_relationships_ui_auto_approve[' . $this->rtypes['approval-oneway']->rtid . ']');
+    $this->assertFieldByName('user_relationships_ui_auto_approve[' . $this->rtypes['approval_oneway']->rtid . ']');
     $this->assertNoFieldByName('user_relationships_ui_auto_approve[' . $this->rtypes['oneway']->rtid . ']');
     $this->assertNoFieldByName('user_relationships_ui_auto_approve[' . $this->rtypes['twoway']->rtid . ']');
 
-    // Enable auto approval for the approval-oneway type.
+    // Enable auto approval for the approval_oneway type.
     $edit = array(
-      'user_relationships_ui_auto_approve[' . $this->rtypes['approval-oneway']->rtid . ']' => TRUE,
+      'user_relationships_ui_auto_approve[' . $this->rtypes['approval_oneway']->rtid . ']' => TRUE,
     );
     $this->drupalPost(NULL, $edit, t('Save'));
 
     // Verify that the defaults are set correctly.
-    $this->assertFieldChecked('edit-user-relationships-ui-auto-approve-' . $this->rtypes['approval-oneway']->rtid);
+    $this->assertFieldChecked('edit-user-relationships-ui-auto-approve-' . $this->rtypes['approval_oneway']->rtid);
     $this->assertNoFieldChecked('edit-user-relationships-ui-auto-approve-' . $this->rtypes['approval']->rtid);
 
     // Finally, actually verify that the settings work.
@@ -166,15 +170,15 @@ class UserRelationshipUserSettings extends DrupalWebTestCase {
     $this->drupalPost('relationship/' . $u3->uid . '/request/' . $this->rtypes['approval']->rtid, array(), t('Send'));
     $this->assertText(t('Your approval request has been sent to @user.', array('@user' => $u3->name)));
 
-    // Request approval-oneway relationships, should approve automatically.
-    $this->drupalPost('relationship/' . $u3->uid . '/request/' . $this->rtypes['approval-oneway']->rtid, array(), t('Send'));
+    // Request approval_oneway relationships, should approve automatically.
+    $this->drupalPost('relationship/' . $u3->uid . '/request/' . $this->rtypes['approval_oneway']->rtid, array(), t('Send'));
     $this->assertText(t("You are @user's newest approval-oneway.", array('@user' => $u3->name)));
 
     // Load relationships between these two users.
     $relationships = user_relationships_load(array('between' => array($u3->uid, $u4->uid)));
     $this->assertEqual(count($relationships), 2);
     foreach ($relationships as $relationship) {
-      if ($relationship->rtid == $this->rtypes['approval-oneway']->rtid) {
+      if ($relationship->rtid == $this->rtypes['approval_oneway']->rtid) {
         $this->assertTrue((bool) $relationship->approved);
       }
       elseif ($relationship->rtid == $this->rtypes['approval']->rtid) {

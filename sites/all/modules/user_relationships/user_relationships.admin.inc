@@ -173,6 +173,15 @@ function user_relationships_admin_type_edit($form, &$form_state, $relationship_t
     '#required'       => TRUE,
     '#weight'         => -10,
   );
+  $form['machine_name'] = array(
+    '#type' => 'machine_name',
+    '#default_value' => isset($relationship_type) ? $relationship_type->machine_name : NULL,
+    '#maxlength' => 255,
+    '#machine_name' => array(
+      'exists' => 'user_relationships_type_machine_name_load',
+    ),
+    '#weight' => -9,
+  );
   $form['requires_approval'] = array(
     '#type'           => 'checkbox',
     '#title'          => t('Requires Approval'),

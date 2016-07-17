@@ -78,7 +78,7 @@ function quote_node_view($node, $view_mode) {
       'fragment' => 'comment-form'
     );
 
-    $node->content['links']['quote'] = array(
+    $node->content['links']['comment'] = array(
       '#links' => $links,
       '#attributes' => array('class' => array('links', 'inline'))
     );
@@ -99,7 +99,7 @@ function quote_comment_view($comment) {
         'query' => array('quote' => 1),
         'fragment' => 'comment-form'
       );
-      $comment->content['links']['quote'] = array(
+      $comment->content['links']['comment'] = array(
         '#links' => $links,
         '#attributes' => array('class' => array('links', 'inline'))
       );
@@ -270,7 +270,7 @@ function _quote_filter_process($text) {
     // Single regexp with callback allowing for theme calls and quote
     // nesting/recursion with regexp code from
     // http://de.php.net/manual/en/function.preg-replace-callback.php#85836
-    $text = preg_replace_callback('#\[(quote.*?)]((?>\[(?!/?quote[^[]*?])|[^[]|(?R))*)\[/quote]#is', '_quote_filter_process_callback', $text);
+    $text = preg_replace_callback('#\[(quote.*?)]((?>\[(?!/?quote[^[]*?])|[^[]+|(?R))*)\[/quote]#is', '_quote_filter_process_callback', $text);
   }
 
   return $text;
@@ -320,14 +320,13 @@ function _quote_get_quoted_data($nid, $cid = NULL) {
   if ($cid) {
     $quoted_comment = comment_load($cid);
     $language = field_language('comment', $quoted_comment, 'comment_body', $quoted_comment->language);
-    $quoted_user_name = $quoted_comment->name != '' ? $quoted_comment->name : variable_get('anonymous', 'Anonymous');
+    $quoted_user_name = check_plain(format_username(user_load($quoted_comment->uid)));
     $quoted_content = $quoted_comment->comment_body[$language][0]['value'];
   }
   else {
     $quoted_node = node_load($nid);
-    $language = $quoted_node->language;
-
-    $quoted_user_name = $quoted_node->name != '' ? $quoted_node->name : variable_get('anonymous', 'Anonymous');
+    $language = field_language('node', $quoted_node, 'body', $quoted_node->language);
+    $quoted_user_name = check_plain(format_username(user_load($quoted_node->uid)));
     $quoted_content = $quoted_node->body[$language][0]['value'];
   }
 
@@ -357,10 +356,10 @@ function theme_quote($vars) {
   $zebra = $nest & 1 ? 'odd' : 'even';
   $quote_output = '<blockquote class="quote-msg quote-nest-' . $nest . ' ' . $zebra . '">';
   if ($quote_author != '') {
-    $quote_author = t('%author wrote:', array('%author' => $quote_author));
+    $quote_author = t('%author wrote: ', array('%author' => $quote_author));
   }
   else {
-    $quote_author = t('Quote:');
+    $quote_author = t('Quote: ');
   }
   $quote_author = '<div class="quote-author">' . $quote_author . '</div>';
   $quote_output .= $quote_author . $quote_content . '</blockquote>';

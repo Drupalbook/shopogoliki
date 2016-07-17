@@ -99,10 +99,13 @@ function theme_user_relationship_implications_form_table($variables) {
     if (!is_numeric($rtid)) {
       continue;
     }
+    $col1 = array_shift($elements);
+    $col2 = array_shift($elements);
+    $col3 = array_shift($elements);
     $rows[$rtid] = array(
-      drupal_render(array_shift($elements)),
-      drupal_render(array_shift($elements)),
-      drupal_render(array_shift($elements)),
+      drupal_render($col1),
+      drupal_render($col2),
+      drupal_render($col3),
     );
   }
   return theme('table', array('header' => $headers, 'rows' => $rows));
