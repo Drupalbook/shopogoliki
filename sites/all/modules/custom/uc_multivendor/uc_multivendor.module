@@ -13,7 +13,7 @@
  */
 function uc_multivendor_init() {
   drupal_add_library('system', 'ui.tabs');
-  drupal_add_css(drupal_get_path('module', 'sitemade_sp') . '/sitemade_sp.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+  drupal_add_css(drupal_get_path('module', 'uc_multivendor') . '/uc_multivendor.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 }
 
 /**

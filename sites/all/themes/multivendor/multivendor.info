@@ -12,8 +12,8 @@
 ; page at admin/appearance.
 
 screenshot  = screenshot.png
-name        = Zen Sub-theme Starter Kit
-description = Read the <a href="http://drupal.org/node/873778">online docs</a> or the included README.txt on how to create a theme with Zen.
+name        = Multi-vendor
+description = Multi-vendor theme for Ubercart Marketplace.
 
 
 
@@ -66,11 +66,6 @@ scripts[] = js/jquery.fancybox.pack.js
 scripts[] = js/jquery.fancybox-buttons.js
 scripts[] = js/jquery.fancybox-thumbs.js
 scripts[] = js/jquery.fancybox-media.js
-;scripts[] = js/animation-fix.js
-;scripts[] = js/jquery-css-transform.js
-;scripts[] = js/jquery-animate-css-rotate-scale.js
-;scripts[] = js/rotate3Di-0.9.js
-;scripts[] = js/leaves_falling.js
 scripts[] = js/snow.js
 scripts[] = js/custom.js
 
