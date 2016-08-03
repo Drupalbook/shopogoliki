@@ -1,7 +1,0 @@
-name = Sitemade market
-description = Site-made.ru market
-core = 7.x
-package = Features
-version = 7.x-1.0
-project = sitemade_market
-features[features_api][] = api:2
