@@ -17,11 +17,30 @@ function uc_multivendor_init() {
 }
 
 /**
+ * implements hook_menu().
+ */
+function uc_multivendor_menu() {
+  $items = array();
+
+  $items['user/%/list-messages'] = array(
+    'title' => t('List of messages'),
+    'description' => t('Messages with user'),
+    'page callback' => '_uc_multivendor_list_messages',
+    'page arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('access content'),
+    'expanded' => TRUE,
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_block_info().
  */
 function uc_multivendor_block_info() {
-  $block[1]['info'] = 'Author pane';
-  $block[2]['info'] = 'Статистика сайта';
+  $block[1]['info'] = t('Author pane');
+  $block[2]['info'] = t('Site statistics');
   return $block;
 }
 
@@ -80,13 +99,13 @@ function uc_multivendor_block_view($delta = '') {
         ->countQuery()
         ->execute()
         ->fetchField();
-      $content .= '<div>Пользователей на сайте: <strong>' . $online . '</strong></div>';
-      $content .= '<div>Всего пользователей: <strong>' . $users . '</strong></div>';
-      $content .= '<div>Всего альбомов: <strong>' . $albums . '</strong></div>';
-      $content .= '<div>Всего фотографий: <strong>' . $photos . '</strong></div>';
-      $content .= '<div>Всего комментариев: <strong>' . $comments . '</strong></div>';
+      $content .= '<div>' . t('Users online:') . '<strong>' . $online . '</strong></div>';
+      $content .= '<div>' . t('Total users:') . '<strong>' . $users . '</strong></div>';
+      $content .= '<div>' . t('Total albums:') . '<strong>' . $albums . '</strong></div>';
+      $content .= '<div>' . t('Total products:') . '<strong>' . $photos . '</strong></div>';
+      $content .= '<div>' . t('Total comments:') . '<strong>' . $comments . '</strong></div>';
       $block['content'] = $content;
-      $block['subject'] = 'Статистика сайта';
+      $block['subject'] = t('Site statistics');
       break;
   }
   return $block;
@@ -102,7 +121,7 @@ function uc_multivendor_form_alter(&$form, &$form_state, $form_id) {
   }
 
   if ($form['#id'] == 'comment-form') {
-    $form['comment_body']['und'][0]['#description'] = 'Введите текст с клавиатуры, чтобы активировать кнопку Сохранить';
+    $form['comment_body']['und'][0]['#description'] = t('Add any text to activate Save button');
   }
   if ($form['#id'] == 'views-form-my-products-vbo-page') {
     $nodes = db_select('node', 'n')
@@ -149,7 +168,7 @@ function uc_multivendor_menu_local_tasks_alter(&$data, $router_item, $root_path)
           '#theme' => 'menu_local_task',
           '#link' => array(
             'href' => 'node/' . $node->field_reftovar['und'][0]['nid'],
-            'title' => 'Вернуться в альбом',
+            'title' => t('Back to the album'),
             'weight' => -5,
           ),
         );
@@ -230,25 +249,6 @@ function uc_multivendor_node_insert($node) {
 }
 
 /**
- * implements hook_menu().
- */
-function uc_multivendor_menu() {
-  $items = array();
-
-  $items['user/%/list-messages'] = array(
-    'title' => t('List of messages'),
-    'description' => t('Messages with user'),
-    'page callback' => '_uc_multivendor_list_messages',
-    'page arguments' => array(1),
-    'type' => MENU_LOCAL_TASK,
-    'access arguments' => array('access content'),
-    'expanded' => TRUE,
-  );
-
-  return $items;
-}
-
-/**
  * Page with seller orders.
  */
 function _uc_multivendor_my_orders_page($uid) {
@@ -287,7 +287,7 @@ function _uc_multivendor_my_orders_page($uid) {
  */
 function uc_multivendor_node_delete($node) {
   if ($node->type == 'photo') {
-    drupal_set_message('Фото удалено, <a style="font-size: 18px !important; font-weight: bold; color: #D02DEC !important;"  href="/node/' . $node->field_reftovar["und"][0]["nid"] . '">вернуться в альбом</a>');
+    drupal_set_message(t('Product is deleted') . ', <a style="font-size: 18px !important; font-weight: bold; color: #D02DEC !important;"  href="/node/' . $node->field_reftovar["und"][0]["nid"] . '">' . t('back to album') . '</a>');
   }
 }
 
