@@ -106,70 +106,9 @@ function uc_multivendor_block_view($delta = '') {
 }
 
 /**
- * Implements hook_form_alter().
- */
-function uc_multivendor_form_alter(&$form, &$form_state, $form_id) {
-  if ($form['#id'] == 'upload-nodes-upload-form') {
-    $nid = explode('/', $_SERVER['QUERY_STRING']);
-    $form['field_reftovar']['und']['#default_value'] = $nid[1];
-  }
-
-  if ($form['#id'] == 'comment-form') {
-    $form['comment_body']['und'][0]['#description'] = t('Add any text to activate Save button');
-  }
-  if ($form['#id'] == 'views-form-my-products-vbo-page') {
-    $nodes = db_select('node', 'n')
-      ->fields('n', array('nid', 'title'))
-      ->condition('n.type', 'tovar')
-      ->condition('n.uid', arg(1))
-      ->execute();
-    $nodes = $nodes->fetchAll();
-    if (!empty($form['bundle_photo']['field_reftovar']['und']['#options'])) {
-      $none = $form['bundle_photo']['field_reftovar']['und']['#options']['_none'];
-      unset($form['bundle_photo']['field_reftovar']['und']['#options']);
-      $form['bundle_photo']['field_reftovar']['und']['#options']['_none'] = $none;
-      foreach ($nodes as $node_nid) {
-        $form['bundle_photo']['field_reftovar']['und']['#options'][$node_nid->nid] = $node_nid->title;
-      }
-    }
-  }
-  if ($form['#id'] == 'views-exposed-form-my-products-vbo-page') {
-    $nodes = db_select('node', 'n')
-      ->fields('n', array('nid', 'title'))
-      ->condition('n.type', 'tovar')
-      ->condition('n.uid', arg(1))
-      ->execute()
-      ->fetchAll();
-    $none = $form['field_reftovar_nid']['#options']['All'];
-    unset($form['field_reftovar_nid']['#options']);
-    $form['field_reftovar_nid']['#options']['All'] = $none;
-    foreach ($nodes as $node_nid) {
-      $form['field_reftovar_nid']['#options'][$node_nid->nid] = $node_nid->title;
-    }
-  }
-}
-
-/**
  * Implements hook_menu_local_tasks_alter().
  */
-function uc_multivendor_menu_local_tasks_alter(&$data, $router_item, $root_path)
-{
-  if (arg(0) == 'node' && is_numeric(arg(1)) && arg(2) == '') {
-    $node = node_load(arg(1));
-    if (!empty($node)) {
-      if ($node->type == 'photo' and !empty($node->field_reftovar['und'][0]['nid'])) {
-        $data['tabs'][0]['output'][] = array(
-          '#theme' => 'menu_local_task',
-          '#link' => array(
-            'href' => 'node/' . $node->field_reftovar['und'][0]['nid'],
-            'title' => t('Back to the album'),
-            'weight' => -5,
-          ),
-        );
-        $data['tabs'][0]['count'] += 1;
-      }
-    }
-  }
+function uc_multivendor_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   if (arg(0) == 'user' && is_numeric(arg(1))) {
     if (!empty($data['tabs'][0])) {
       foreach ($data['tabs'][0]['output'] as $key => $tab) {
@@ -197,71 +136,6 @@ function uc_multivendor_menu_local_tasks_alter(&$data, $router_item, $root_path)
         }
       }
     }
-  }
-}
-
-/**
- * Implements hook_views_pre_render().
- */
-function uc_multivendor_views_pre_render(&$view) {
-  $used_nids = array();
-
-  if ($view->name == 'topics') {
-    if ($view->current_display == 'page') {
-      foreach ($view->result as $row) {
-        if (!in_array($row->nid, $used_nids)) {
-          $new_view_result[] = $row;
-          $used_nids[] = $row->nid;
-        }
-      }
-      $view->result = $new_view_result;
-    }
-  }
-
-  if ($view->name == 'albums_with_tags') {
-    if ($view->current_display == 'page') {
-      foreach ($view->result as $row) {
-        if (!in_array($row->nid, $used_nids)) {
-          $new_view_result[] = $row;
-          $used_nids[] = $row->nid;
-        }
-      }
-      $view->result = $new_view_result;
-    }
-  }
-}
-
-/**
- * implements hook_node_insert().
- */
-function uc_multivendor_node_insert($node) {
-  if ($node->type == 'photo') {
-    $album = node_load($node->field_reftovar['und'][0]['nid']);
-    $album->field_date_update['und'][0]['value'] = time();
-    node_save($album);
-  }
-}
-
-/**
- * Implements hook_node_delete().
- */
-function uc_multivendor_node_delete($node) {
-  if ($node->type == 'photo') {
-    drupal_set_message(t('Product is deleted') . ', <a style="font-size: 18px !important; font-weight: bold; color: #D02DEC !important;"  href="/node/' . $node->field_reftovar["und"][0]["nid"] . '">' . t('back to album') . '</a>');
-  }
-}
-
-/**
- * Implements hook_user_view().
- */
-function uc_multivendor_user_view($account, $view_mode, $langcode)
-{
-  global $user;
-  if (!in_array('administrator', $user->roles)) {
-    unset($account->content['field_phone1']);
-  }
-  else {
-    // Show phone only for admin.
   }
 }
 
