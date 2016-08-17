@@ -1,16 +1,17 @@
 {
 	"name": "jquery-colorbox",
 	"description": "jQuery lightbox and modal window plugin",
+	"version": "1.5.14",
 	"dependencies": {
 		"jquery": ">=1.3.2"
 	},
 	"keywords": [
 		"modal",
 		"lightbox",
-		"gallery",
+		"window",
 		"popup",
 		"ui",
-		"jquery-plugin"
+		"jQuery"
 	],
 	"authors": [
 		{
