@@ -1,0 +1,367 @@
+<?php
+/**
+ * @file
+ * Created by Ivan levmyshkin Abramenko
+ * http://site-made.ru
+ * Skype: Abramenko89
+ * Email: levmyshkin89@gmail.com
+ * Feel free for write me question/issues about this drupal installation
+ */
+
+/**
+ * Implements hook_init().
+ */
+function sitemade_sp_init() {
+  drupal_add_library('system', 'ui.tabs');
+  drupal_add_css(drupal_get_path('module', 'sitemade_sp') . '/sitemade_sp.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function sitemade_sp_block_info() {
+  $block[1]['info'] = 'Author pane';
+  $block[2]['info'] = 'Статистика сайта';
+  return $block;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function sitemade_sp_block_view($delta = '') {
+  switch ($delta) {
+    case 1:
+      $content = '';
+      global $user;
+      $freinds = db_select('user_relationships', 'r')
+        ->condition('requester_id', $user->uid)
+        ->condition('rtid', 1)
+        ->condition('approved', 1)
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      $messages = db_select('pm_index', 'm')
+        ->condition('recipient', $user->uid)
+        ->condition('deleted', 0)
+        ->condition('type', 'user')
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      $track = views_get_view_result('custom_tracker_new_count', $reset = FALSE);
+      $content .= '<div>' . l(t('Friends (') . $freinds . ')', 'user/' . $user->uid . '/relationships') . '</div>';
+      $content .= '<div>' . l(t('Messages (') . $messages . ')', 'messages/list') . '</div>';
+      $content .= '<div>' . l(t('Discussions (') . count($track) . ')', 'user/' . $user->uid . '/new') . '</div>';
+      $block['content'] = $content;
+      $block['subject'] = '';
+      break;
+    case 2:
+      $content = '';
+      $users = db_select('users', 'u')
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      $time = time() - 1200;
+      $online = db_select('users')
+        ->condition('access', $time, '>')
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      $albums = db_select('node', 'n')
+        ->condition('type', 'tovar')
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      $photos = db_select('node', 'n')
+        ->condition('type', 'photo')
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      $comments = db_select('comment', 'c')
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      $content .= '<div>Пользователей на сайте: <strong>' . $online . '</strong></div>';
+      $content .= '<div>Всего пользователей: <strong>' . $users . '</strong></div>';
+      $content .= '<div>Всего альбомов: <strong>' . $albums . '</strong></div>';
+      $content .= '<div>Всего фотографий: <strong>' . $photos . '</strong></div>';
+      $content .= '<div>Всего комментариев: <strong>' . $comments . '</strong></div>';
+      $block['content'] = $content;
+      $block['subject'] = 'Статистика сайта';
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitemade_sp_form_alter(&$form, &$form_state, $form_id) {
+  if ($form['#id'] == 'upload-nodes-upload-form') {
+    $nid = explode('/', $_SERVER['QUERY_STRING']);
+    $form['field_reftovar']['und']['#default_value'] = $nid[1];
+  }
+
+  if ($form['#id'] == 'comment-form') {
+    $form['comment_body']['und'][0]['#description'] = 'Введите текст с клавиатуры, чтобы активировать кнопку Сохранить';
+  }
+  if ($form['#id'] == 'views-form-my-products-vbo-page') {
+    $nodes = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('n.type', 'tovar')
+      ->condition('n.uid', arg(1))
+      ->execute();
+    $nodes = $nodes->fetchAll();
+    if (!empty($form['bundle_photo']['field_reftovar']['und']['#options'])) {
+      $none = $form['bundle_photo']['field_reftovar']['und']['#options']['_none'];
+      unset($form['bundle_photo']['field_reftovar']['und']['#options']);
+      $form['bundle_photo']['field_reftovar']['und']['#options']['_none'] = $none;
+      foreach ($nodes as $node_nid) {
+        $form['bundle_photo']['field_reftovar']['und']['#options'][$node_nid->nid] = $node_nid->title;
+      }
+    }
+  }
+  if ($form['#id'] == 'views-exposed-form-my-products-vbo-page') {
+    $nodes = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('n.type', 'tovar')
+      ->condition('n.uid', arg(1))
+      ->execute()
+      ->fetchAll();
+    $none = $form['field_reftovar_nid']['#options']['All'];
+    unset($form['field_reftovar_nid']['#options']);
+    $form['field_reftovar_nid']['#options']['All'] = $none;
+    foreach ($nodes as $node_nid) {
+      $form['field_reftovar_nid']['#options'][$node_nid->nid] = $node_nid->title;
+    }
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function sitemade_sp_menu_local_tasks_alter(&$data, $router_item, $root_path)
+{
+  if (arg(0) == 'node' && is_numeric(arg(1)) && arg(2) == '') {
+    $node = node_load(arg(1));
+    if (!empty($node)) {
+      if ($node->type == 'photo' and !empty($node->field_reftovar['und'][0]['nid'])) {
+        $data['tabs'][0]['output'][] = array(
+          '#theme' => 'menu_local_task',
+          '#link' => array(
+            'href' => 'node/' . $node->field_reftovar['und'][0]['nid'],
+            'title' => 'Вернуться в альбом',
+            'weight' => -5,
+          ),
+        );
+        $data['tabs'][0]['count'] += 1;
+      }
+    }
+  }
+  if (arg(0) == 'user' && is_numeric(arg(1))) {
+    if (!empty($data['tabs'][0])) {
+      foreach ($data['tabs'][0]['output'] as $key => $tab) {
+        if ($tab['#link']['path'] == 'user/%/track') {
+          unset($data['tabs'][0]['output'][$key]);
+          $data['tabs'][0]['count']--;
+        }
+      }
+      foreach ($data['tabs'][0]['output'] as $key => $tab) {
+        if ($tab['#link']['path'] == 'user/%/shortcuts') {
+          unset($data['tabs'][0]['output'][$key]);
+          $data['tabs'][0]['count']--;
+        }
+      }
+      foreach ($data['tabs'][0]['output'] as $key => $tab) {
+        if ($tab['#link']['path'] == 'user/%/bookmarks') {
+          unset($data['tabs'][0]['output'][$key]);
+          $data['tabs'][0]['count']--;
+        }
+      }
+      foreach ($data['tabs'][0]['output'] as $key => $tab) {
+        if ($tab['#link']['path'] == 'user/%/imce') {
+          unset($data['tabs'][0]['output'][$key]);
+          $data['tabs'][0]['count']--;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function sitemade_sp_views_pre_render(&$view) {
+  $used_nids = array();
+
+  if ($view->name == 'topics') {
+    if ($view->current_display == 'page') {
+      foreach ($view->result as $row) {
+        if (!in_array($row->nid, $used_nids)) {
+          $new_view_result[] = $row;
+          $used_nids[] = $row->nid;
+        }
+      }
+      $view->result = $new_view_result;
+    }
+  }
+
+  if ($view->name == 'albums_with_tags') {
+    if ($view->current_display == 'page') {
+      foreach ($view->result as $row) {
+        if (!in_array($row->nid, $used_nids)) {
+          $new_view_result[] = $row;
+          $used_nids[] = $row->nid;
+        }
+      }
+      $view->result = $new_view_result;
+    }
+  }
+}
+
+/**
+ * implements hook_node_insert().
+ */
+function sitemade_sp_node_insert($node) {
+  if ($node->type == 'photo') {
+    $album = node_load($node->field_reftovar['und'][0]['nid']);
+    $album->field_date_update['und'][0]['value'] = time();
+    node_save($album);
+  }
+}
+
+/**
+ * implements hook_menu().
+ */
+function sitemade_sp_menu() {
+  $items = array();
+
+  $items['user/%/list-messages'] = array(
+    'title' => t('List of messages'),
+    'description' => t('Messages with user'),
+    'page callback' => '_sitemade_sp_list_messages',
+    'page arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('access content'),
+    'expanded' => TRUE,
+  );
+
+  return $items;
+}
+
+/**
+ * Page with seller orders.
+ */
+function _sitemade_sp_my_orders_page($uid) {
+  $products = db_select('uc_order_products', 'p');
+  $products->join('node', 'n', 'p.nid = n.nid');
+  $products->join('uc_orders', 'o', 'o.order_id = p.order_id');
+  $products->join('users', 'u', 'u.uid = o.uid');
+  $products
+    ->fields('p', array('nid', 'order_id', 'qty'))
+    ->fields('n', array('title'))
+    ->fields('o', array('created', 'uid'))
+    ->fields('u', array('name'))
+    ->condition('n.uid', $uid)
+    ->orderBy('p.order_id', 'desc');
+  $orders = $products->execute()->fetchAll();
+
+  // @todo rewrite with theme('table').
+  $content = '';
+  $content .= '<table class="my-orders">';
+  $content .= '<tr><td>Номер заказа</td><td>Дата заказа</td><td>Наименование</td><td>Количество</td><td>Покупатель</td></tr>';
+  foreach ($orders as $order) {
+    $content .= '<tr>';
+    $content .= '<td>' . $order->order_id . '</td>';
+    $content .= '<td>' . date('d-m-Y', $order->created) . '</td>';
+    $content .= '<td>' . l($order->title, 'node/' . $order->nid) . '</td>';
+    $content .= '<td>' . $order->qty . '</td>';
+    $content .= '<td>' . l($order->name, 'user/' . $order->uid) . '</td>';
+    $content .= '</tr>';
+  }
+  $content .= '</table>';
+  return $content;
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function sitemade_sp_node_delete($node) {
+  if ($node->type == 'photo') {
+    drupal_set_message('Фото удалено, <a style="font-size: 18px !important; font-weight: bold; color: #D02DEC !important;"  href="/node/' . $node->field_reftovar["und"][0]["nid"] . '">вернуться в альбом</a>');
+  }
+}
+
+/**
+ * Implements hook_user_view().
+ */
+function sitemade_sp_user_view($account, $view_mode, $langcode)
+{
+  global $user;
+  if (!in_array('administrator', $user->roles)) {
+    unset($account->content['field_phone1']);
+  }
+  else {
+    // Show phone only for admin.
+  }
+}
+
+/*
+ * $uid - id who writes me.
+ */
+function _sitemade_sp_list_messages($uid) {
+  global $user;
+  if (!$user->uid) {
+    return l(t('Login'), 'user') . t(', for talking with your friends');
+  }
+  if ($user->uid == $uid) {
+    return t('Come in private messages');
+  }
+  $query = db_select('pm_message', 'm');
+  $query->innerJoin('pm_index', 'i', 'm.mid=i.mid');
+  $query->fields('m');
+  $query->fields('i');
+  $query->condition('m.author', $uid);
+  $query->condition('i.recipient', $user->uid);
+  $list1 = $query->execute()->fetchAll();  //incoming
+  $query = db_select('pm_message', 'm');
+  $query->innerJoin('pm_index', 'i', 'm.mid=i.mid');
+  $query->fields('m');
+  $query->fields('i');
+  $query->condition('m.author', $user->uid);
+  $query->condition('i.recipient', $uid);
+  $list2 = $query->execute()->fetchAll();  //outcoming
+  $list = array_merge($list1, $list2);
+  usort($list, "sitemade_sp_cmp");
+  $content = '';
+  $user1 = user_load($user->uid);
+  $user2 = user_load($uid);
+  $content .= '<a class="send-message" href="/messages/new/' . $uid . '?destination=user/' . $uid . '/list-messages">Написать сообщение</a>';
+  foreach ($list as $message) {
+    if ($message->author == $user->uid) { //user1
+      $content .= '<div class="user1 user-message">';
+
+      $content .= '<div class="time"> ' . $user1->name . ' - ' . date("d.m.Y H:i:s", $message->timestamp) . '</div>';
+      $content .= '<div class="body">' . $message->body . '</div>';
+      $content .= '</div>';
+    }
+    else {
+      $content .= '<div class="user2 user-message">';
+      $content .= '<div class="time"> ' . $user2->name . ' - ' . date("d.m.Y H:i:s", $message->timestamp) . '</div>';
+      $content .= '<div class="body">' . $message->body . '</div>';
+      $content .= '</div>';
+    }
+  }
+  if (empty($list)) {
+    $content .= '<div>' . t('You have no messages from this user') . '</div>';
+  }
+  $content .= '<a class="send-message" href="/messages/new/' . $uid . '?destination=user/' . $uid . '/list-messages">' . t('write message') . '</a>';
+  return $content;
+}
+
+/**
+ * Sort array by timestamp.
+ */
+function sitemade_sp_cmp($a, $b) {
+  return strcmp($b->timestamp, $a->timestamp);
+}
+
