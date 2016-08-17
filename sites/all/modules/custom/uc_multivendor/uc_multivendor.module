@@ -249,40 +249,6 @@ function uc_multivendor_node_insert($node) {
 }
 
 /**
- * Page with seller orders.
- */
-function _uc_multivendor_my_orders_page($uid) {
-  $products = db_select('uc_order_products', 'p');
-  $products->join('node', 'n', 'p.nid = n.nid');
-  $products->join('uc_orders', 'o', 'o.order_id = p.order_id');
-  $products->join('users', 'u', 'u.uid = o.uid');
-  $products
-    ->fields('p', array('nid', 'order_id', 'qty'))
-    ->fields('n', array('title'))
-    ->fields('o', array('created', 'uid'))
-    ->fields('u', array('name'))
-    ->condition('n.uid', $uid)
-    ->orderBy('p.order_id', 'desc');
-  $orders = $products->execute()->fetchAll();
-
-  // @todo rewrite with theme('table').
-  $content = '';
-  $content .= '<table class="my-orders">';
-  $content .= '<tr><td>Номер заказа</td><td>Дата заказа</td><td>Наименование</td><td>Количество</td><td>Покупатель</td></tr>';
-  foreach ($orders as $order) {
-    $content .= '<tr>';
-    $content .= '<td>' . $order->order_id . '</td>';
-    $content .= '<td>' . date('d-m-Y', $order->created) . '</td>';
-    $content .= '<td>' . l($order->title, 'node/' . $order->nid) . '</td>';
-    $content .= '<td>' . $order->qty . '</td>';
-    $content .= '<td>' . l($order->name, 'user/' . $order->uid) . '</td>';
-    $content .= '</tr>';
-  }
-  $content .= '</table>';
-  return $content;
-}
-
-/**
  * Implements hook_node_delete().
  */
 function uc_multivendor_node_delete($node) {
