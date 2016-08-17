@@ -85,13 +85,8 @@ function uc_multivendor_block_view($delta = '') {
         ->countQuery()
         ->execute()
         ->fetchField();
-      $albums = db_select('node', 'n')
-        ->condition('type', 'tovar')
-        ->countQuery()
-        ->execute()
-        ->fetchField();
-      $photos = db_select('node', 'n')
-        ->condition('type', 'photo')
+      $products = db_select('node', 'n')
+        ->condition('type', 'product')
         ->countQuery()
         ->execute()
         ->fetchField();
@@ -101,8 +96,7 @@ function uc_multivendor_block_view($delta = '') {
         ->fetchField();
       $content .= '<div>' . t('Users online:') . '<strong>' . $online . '</strong></div>';
       $content .= '<div>' . t('Total users:') . '<strong>' . $users . '</strong></div>';
-      $content .= '<div>' . t('Total albums:') . '<strong>' . $albums . '</strong></div>';
-      $content .= '<div>' . t('Total products:') . '<strong>' . $photos . '</strong></div>';
+      $content .= '<div>' . t('Total products:') . '<strong>' . $products . '</strong></div>';
       $content .= '<div>' . t('Total comments:') . '<strong>' . $comments . '</strong></div>';
       $block['content'] = $content;
       $block['subject'] = t('Site statistics');
